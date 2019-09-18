@@ -41,7 +41,7 @@ public class AmazingBotService {
         return msg;
     }
 
-    public synchronized SendMessage faggot(Message message, ConcurrentHashMap<Integer, Set<User>> users) {
+    public synchronized SendMessage faggot(Message message, ConcurrentHashMap<Long, Set<User>> users) {
         SendMessage msg = collectSendMessage(message);
         StringBuilder sendMessage = new StringBuilder();
 
@@ -54,6 +54,8 @@ public class AmazingBotService {
         if (user.getUserName() != null) {
             if (!user.getUserName().equals("kirill_kot")) {
                 sendMessage.append(user.getUserName());
+            } else {
+                return msg;
             }
         } else {
             sendMessage.append(user.getFirstName()).append(" ").append(user.getLastName());

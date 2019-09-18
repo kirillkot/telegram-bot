@@ -10,26 +10,23 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import ru.kirillkot.telegram.bot.service.AmazingBotService;
 import ru.kirillkot.telegram.bot.service.LocalizationService;
 
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static ru.kirillkot.telegram.bot.configuration.BotConfiguration.token;
 import static ru.kirillkot.telegram.bot.configuration.BotConfiguration.username;
-import static ru.kirillkot.telegram.bot.configuration.Commands.BEST_MEMBER;
-import static ru.kirillkot.telegram.bot.configuration.Commands.CURRENCIES;
-import static ru.kirillkot.telegram.bot.configuration.Commands.FAGGOT;
-import static ru.kirillkot.telegram.bot.configuration.Commands.HELP;
-import static ru.kirillkot.telegram.bot.configuration.Commands.MAN;
-import static ru.kirillkot.telegram.bot.configuration.Commands.WEATHER;
+import static ru.kirillkot.telegram.bot.configuration.Commands.*;
 
 public class AmazingBot extends TelegramLongPollingBot {
 
     private AmazingBotService service;
-    private ConcurrentHashMap<Integer, Set<User>> users;
+    private ConcurrentHashMap<Long, Set<User>> users;
     private LocalizationService localizationService;
 
-    public AmazingBot(AmazingBotService service, ConcurrentHashMap<Integer, Set<User>> users, LocalizationService localizationService) {
+    public AmazingBot(AmazingBotService service, ConcurrentHashMap<Long, Set<User>> users, LocalizationService localizationService) {
         this.service = service;
         this.users = users;
         this.localizationService = localizationService;
@@ -93,8 +90,12 @@ public class AmazingBot extends TelegramLongPollingBot {
             // todo throw exception
         }
 
-        Set<User> users = this.users.get(update.getMessage().getChatId());
-        users.add(user);
+        Long chatId = update.getMessage().getChatId();
+        if (users.containsKey(chatId)) {
+            users.get(chatId).add(user);
+        } else {
+            users.put(chatId, new HashSet<>(Collections.singleton(user)));
+        }
 
         return update;
     }
@@ -105,7 +106,7 @@ public class AmazingBot extends TelegramLongPollingBot {
 
         try {
             Integer countMember = execute(membersCount);
-            if (users.get(message.getChatId()).size() == countMember) {
+            if (users.get(message.getChatId()).size() == countMember - 1) {
                 return service.faggot(message, users);
             }
         } catch (TelegramApiException e) {
