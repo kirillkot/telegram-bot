@@ -7,6 +7,7 @@ import ru.kirillkot.telegram.bot.api.AmazingBot;
 import ru.kirillkot.telegram.bot.service.AmazingBotService;
 import ru.kirillkot.telegram.bot.service.LocalizationService;
 
+import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Application {
@@ -15,7 +16,7 @@ public class Application {
 
         TelegramBotsApi botsApi = new TelegramBotsApi();
         botsApi.registerBot(new AmazingBot(
-                new AmazingBotService(new LocalizationService()),
+                new AmazingBotService(new LocalizationService(), new Random()),
                 new ConcurrentHashMap<>(),
                 new LocalizationService()));
     }
