@@ -1,0 +1,5 @@
+build/
+.gradle/
+.idea
+out/
+src/main/java/ru/kirillkot/telegram/bot/configuration/BotConfiguration.java
