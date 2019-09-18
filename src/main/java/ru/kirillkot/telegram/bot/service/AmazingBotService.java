@@ -70,7 +70,7 @@ public class AmazingBotService {
         return msg;
     }
 
-    public synchronized SendMessage bestMember(Message message) {
+    public synchronized SendMessage bestMember(Message message, ConcurrentHashMap<Long, Set<User>> users) {
         SendMessage msg = collectSendMessage(message);
 
         return msg;

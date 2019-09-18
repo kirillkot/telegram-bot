@@ -62,10 +62,18 @@ public class AmazingBot extends TelegramLongPollingBot {
                 msg = service.weather(message);
                 break;
             case FAGGOT:
-                msg = availableRecognizeFaggot(message);
+                if (availableRecognizeMembers(message)) {
+                    msg = service.faggot(message, users);
+                } else {
+                    msg = notAvailableIndicateMemberType(message, "faggotNotAvailable");
+                }
                 break;
             case BEST_MEMBER:
-                msg = service.bestMember(message);
+                if (availableRecognizeMembers(message)) {
+                    msg = service.bestMember(message, users);
+                } else {
+                    msg = notAvailableIndicateMemberType(message, "bestMemberNotAvailable");
+                }
                 break;
         }
 
@@ -100,22 +108,23 @@ public class AmazingBot extends TelegramLongPollingBot {
         return update;
     }
 
-    private SendMessage availableRecognizeFaggot(Message message) {
+    private boolean availableRecognizeMembers(Message message) {
         GetChatMembersCount membersCount = new GetChatMembersCount();
         membersCount.setChatId(message.getChatId());
 
         try {
-            Integer countMember = execute(membersCount);
-            if (users.get(message.getChatId()).size() == countMember - 1) {
-                return service.faggot(message, users);
-            }
+            return users.get(message.getChatId()).size() == execute(membersCount) - 1;
         } catch (TelegramApiException e) {
             // todo throw exception
         }
 
+        return false;
+    }
+
+    private SendMessage notAvailableIndicateMemberType(Message message, String notAvailableMessage) {
         SendMessage msg = new SendMessage();
         msg.setChatId(message.getChatId());
-        msg.setText(localizationService.getString("faggotNotAvailable"));
+        msg.setText(localizationService.getString(notAvailableMessage));
 
         return msg;
     }
