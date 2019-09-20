@@ -52,11 +52,7 @@ public class AmazingBotService {
         sendMessage.append(service.getString("secretSource"));
 
         if (user.getUserName() != null) {
-            if (!user.getUserName().equals("kirill_kot")) {
-                sendMessage.append(user.getUserName());
-            } else {
-                return msg;
-            }
+            sendMessage.append(user.getUserName());
         } else {
             sendMessage.append(user.getFirstName()).append(" ").append(user.getLastName());
         }
