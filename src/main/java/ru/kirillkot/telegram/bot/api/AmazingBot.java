@@ -1,5 +1,6 @@
 package ru.kirillkot.telegram.bot.api;
 
+import lombok.RequiredArgsConstructor;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.groupadministration.GetChatMembersCount;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -20,17 +21,12 @@ import static ru.kirillkot.telegram.bot.configuration.BotConfiguration.token;
 import static ru.kirillkot.telegram.bot.configuration.BotConfiguration.username;
 import static ru.kirillkot.telegram.bot.configuration.Commands.*;
 
+@RequiredArgsConstructor
 public class AmazingBot extends TelegramLongPollingBot {
 
-    private AmazingBotService service;
-    private ConcurrentHashMap<Long, Set<User>> users;
-    private LocalizationService localizationService;
-
-    public AmazingBot(AmazingBotService service, ConcurrentHashMap<Long, Set<User>> users, LocalizationService localizationService) {
-        this.service = service;
-        this.users = users;
-        this.localizationService = localizationService;
-    }
+    private final AmazingBotService service;
+    private final ConcurrentHashMap<Long, Set<User>> users;
+    private final LocalizationService localizationService;
 
     @Override
     public void onUpdateReceived(Update update) {
@@ -49,6 +45,10 @@ public class AmazingBot extends TelegramLongPollingBot {
 
         if (text.startsWith(MAN)) {
             msg = service.explanation(message);
+        }
+
+        if (text.startsWith(NEWS)) {
+            msg = service.news(message);
         }
 
         switch (text) {

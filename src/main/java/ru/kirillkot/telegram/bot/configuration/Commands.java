@@ -16,8 +16,9 @@ public final class Commands {
     public static final String FAGGOT = commandInitChar + "faggot";
     public static final String BEST_MEMBER = commandInitChar + "best_member";
     public static final String MAN = commandInitChar + "man";
+    public static final String NEWS = commandInitChar + "news";
 
     public static List<String> commands = Collections.unmodifiableList(
-            Arrays.asList(HELP, WEATHER, CURRENCIES, FAGGOT, BEST_MEMBER, MAN));
+            Arrays.asList(HELP, WEATHER, CURRENCIES, FAGGOT, BEST_MEMBER, MAN, NEWS));
 }
 
